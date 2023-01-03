@@ -1,8 +1,7 @@
-Import-Module AWSPowerShell.NetCore
-
-Set-AWSCredential -RoleArn arn:aws:iam::XXX -StoreAs <Key_Name>
-Set-DefaultAWSRegion -Region <Region_Nmae>
-$secretValue = (Get-SECSecret -SecretId <Key_Name>).SecretString
+Install-Module -Name AWS.Tools.Installer -Force
+Set-AWSCredential -RoleArn arn:aws:iam::XXX:role/XXX -StoreAs logzio_key
+Set-DefaultAWSRegion -Region XXX
+$secretValue = (Get-SECSecret -SecretId logzio_key).SecretString
 $encryptedValue = ConvertTo-SecureString -String $secretValue -AsPlainText -Force
 $encryptedValue | ConvertFrom-SecureString
 $logzioUrl = "https://listener.logz.io:8071?token=$encryptedValue"
@@ -43,4 +42,3 @@ if ($restarted) {
 }
 else {  
     Invoke-WebRequest -Uri $logzioUrl -Method POST -Body "There aren't updates available for the machine."
-}
