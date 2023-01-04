@@ -15,8 +15,7 @@ if ($updates) {
 $bootTime = (Get-CimInstance -ClassName Win32_OperatingSystem).LastBootUpTime
 $currentTime = (Get-Date).ToUniversalTime()
 $timeSinceBoot = New-TimeSpan -Start $bootTime -End $currentTime
-#5 Minutes
-if ($timeSinceBoot.TotalMinutes -gt 5) {
+if ($timeSinceBoot.TotalMinutes -gt 8) {
     $body = "The machine is stuck on the 'Please wait' screen."
     Invoke-WebRequest -Uri $logzioUrl -Method POST -Body $body
 }
